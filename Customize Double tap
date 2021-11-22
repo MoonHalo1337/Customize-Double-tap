@@ -1,0 +1,35 @@
+UI.AddSubTab(["Config", "SUBTAB_MGR"], "RAGE");
+UI.AddCheckbox(["Config", "RAGE", "RAGE"], "Customize Double tap");
+UI.AddSliderInt( [ "Config", "RAGE", "RAGE" ], "Tolerance", 0, 2 )
+UI.AddSliderInt( [ "Config", "RAGE", "RAGE" ], "Override tick", -2, 14 )
+UI.AddSliderInt( [ "Config", "RAGE", "RAGE" ], "Sv tick", 1, 20 )
+
+function UIEnabled() {
+        if (UI.GetValue(["Config", "RAGE", "RAGE", "Customize Double tap"])  == 1) {
+        UI.SetEnabled(["Config", "RAGE", "RAGE", "Tolerance"], 1);
+        UI.SetEnabled(["Config", "RAGE", "RAGE", "Override tick"], 1);
+        UI.SetEnabled(["Config", "RAGE", "RAGE", "Sv tick"], 1);
+        } 
+else if (UI.GetValue(["Config", "RAGE", "RAGE", "Customize Double tap"]) == 0) {
+        UI.SetEnabled(["Config", "RAGE", "RAGE", "Tolerance"], 0);
+        UI.SetEnabled(["Config", "RAGE", "RAGE", "Override tick"], 0);
+        UI.SetEnabled(["Config", "RAGE", "RAGE", "Sv tick"], 0);
+        }
+}
+Cheat.RegisterCallback("CreateMove", "UIEnabled");
+
+function tick() {
+       var t1 = UI.GetValue(["Config", "RAGE", "RAGE", "Tolerance"])
+       var t2 = UI.GetValue(["Config", "RAGE", "RAGE", "Override tick"])
+       var t3 = UI.GetValue(["Config", "RAGE", "RAGE", "Sv tick"])
+
+        if (UI.GetValue(["Config", "RAGE", "RAGE", "Customize Double tap"])  == 1) {
+     Exploit.OverrideTolerance(t1)
+     Exploit.OverrideShift(t2)
+  } else {
+     Exploit.OverrideTolerance(2)
+     Exploit.OverrideShift(12)
+  }
+Cheat.ExecuteCommand( "sv_maxusrcmdprocessticks " + t3 );
+}
+Cheat.RegisterCallback("CreateMove", "tick");
